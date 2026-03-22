@@ -1,0 +1,132 @@
+<!-- ── Top Navigation Bar ───────────────────────────────────────────────── -->
+<header class="app-nav">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <span class="nav-icon material-icons">home_work</span>
+      <span class="nav-title">Mortgage<strong>Expert</strong></span>
+    </div>
+    <nav class="nav-links">
+      <a href="#" class="nav-link">Home</a>
+      <a href="#tools" class="nav-link active">
+        <span class="material-icons">calculate</span>
+        Tools &amp; Calculators
+      </a>
+      <a href="#" class="nav-link">Apply Now</a>
+      <a href="#" class="nav-link">Education</a>
+    </nav>
+    <button class="nav-cta">Get Pre-Approved</button>
+  </div>
+</header>
+
+<!-- ── Page Hero ────────────────────────────────────────────────────────── -->
+<section class="page-hero" id="tools">
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <span class="material-icons">build_circle</span>
+      Homebuyer Resources
+    </div>
+    <h1 class="hero-title">Tools &amp; Calculators</h1>
+    <p class="hero-sub">Everything you need to make smarter homebuying decisions —<br>from payment estimates to affordability planning.</p>
+  </div>
+  <div class="hero-wave">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#f0f2f8"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ── Main Content ─────────────────────────────────────────────────────── -->
+<main class="app-main">
+  <div class="page-wrap">
+
+    <!-- ── Tools Hub ──────────────────────────────────────────────────── -->
+    <section class="tools-hub">
+      <div class="tools-hub-header">
+        <h2 class="tools-hub-title">Available Calculators</h2>
+        <p class="tools-hub-sub">Select a tool to get started</p>
+      </div>
+
+      <div class="tools-grid">
+
+        <!-- Monthly Payment Calculator — active -->
+        <a href="#calculator" class="tool-card tool-card--active">
+          <div class="tool-card__icon tool-card__icon--blue">
+            <span class="material-icons">payments</span>
+          </div>
+          <div class="tool-card__body">
+            <div class="tool-card__badge">Active</div>
+            <h3 class="tool-card__title">Monthly Payment Calculator</h3>
+            <p class="tool-card__desc">Estimate your full monthly mortgage payment including principal, interest, taxes, insurance, and PMI.</p>
+          </div>
+          <span class="tool-card__arrow material-icons">arrow_forward</span>
+        </a>
+
+        <!-- Affordability Calculator — coming soon -->
+        <div class="tool-card tool-card--soon">
+          <div class="tool-card__icon tool-card__icon--green">
+            <span class="material-icons">account_balance_wallet</span>
+          </div>
+          <div class="tool-card__body">
+            <div class="tool-card__badge tool-card__badge--soon">Coming Soon</div>
+            <h3 class="tool-card__title">Affordability Calculator</h3>
+            <p class="tool-card__desc">Find out how much home you can afford based on your income, debts, and down payment.</p>
+          </div>
+        </div>
+
+        <!-- Refinance Calculator — coming soon -->
+        <div class="tool-card tool-card--soon">
+          <div class="tool-card__icon tool-card__icon--purple">
+            <span class="material-icons">currency_exchange</span>
+          </div>
+          <div class="tool-card__body">
+            <div class="tool-card__badge tool-card__badge--soon">Coming Soon</div>
+            <h3 class="tool-card__title">Refinance Calculator</h3>
+            <p class="tool-card__desc">Compare your current loan to a new one and calculate how long it takes to break even.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── Active Tool: Monthly Payment Calculator ─────────────────────── -->
+    <section class="active-tool" id="calculator">
+
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb" aria-label="breadcrumb">
+        <span class="material-icons">build_circle</span>
+        <a href="#tools" class="breadcrumb__link">Tools &amp; Calculators</a>
+        <span class="material-icons breadcrumb__sep">chevron_right</span>
+        <span class="breadcrumb__current">Monthly Payment Calculator</span>
+      </nav>
+
+      <div class="active-tool__header">
+        <div class="active-tool__icon">
+          <span class="material-icons">payments</span>
+        </div>
+        <div>
+          <h2 class="active-tool__title">Monthly Payment Calculator</h2>
+          <p class="active-tool__sub">Fill in your loan details for a real-time payment breakdown.</p>
+        </div>
+      </div>
+
+      <app-calculator></app-calculator>
+    </section>
+
+  </div>
+</main>
+
+<!-- ── Footer ───────────────────────────────────────────────────────────── -->
+<footer class="app-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="material-icons">home_work</span>
+      <span>Mortgage<strong>Expert</strong></span>
+    </div>
+    <p class="footer-copy">© 2025 MortgageExpert. All rights reserved. This calculator provides estimates only and is not financial advice.</p>
+    <div class="footer-links">
+      <a href="#tools" class="footer-link">Tools &amp; Calculators</a>
+      <a href="#" class="footer-link">Apply Now</a>
+      <a href="#" class="footer-link">Education</a>
+    </div>
+  </div>
+</footer>

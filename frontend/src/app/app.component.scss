@@ -1,0 +1,464 @@
+// ─── App Shell Layout ────────────────────────────────────────────────────────
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+// ── Navigation ──────────────────────────────────────────────────────────────
+.app-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: linear-gradient(135deg, #1a237e 0%, #283593 60%, #3949ab 100%);
+  box-shadow: 0 2px 16px rgba(26, 35, 126, 0.35);
+}
+
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #fff;
+  margin-right: 16px;
+
+  .nav-icon {
+    font-size: 28px;
+    color: #ffd54f;
+  }
+
+  .nav-title {
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: rgba(255,255,255,0.9);
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+
+    strong {
+      font-weight: 800;
+      color: #fff;
+    }
+  }
+}
+
+.nav-links {
+  display: flex;
+  gap: 2px;
+  flex: 1;
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.72);
+  transition: background 0.2s, color 0.2s;
+  white-space: nowrap;
+
+  .material-icons { font-size: 16px; }
+
+  &:hover {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+  }
+
+  &.active {
+    background: rgba(255,255,255,0.16);
+    color: #fff;
+    font-weight: 600;
+  }
+}
+
+.nav-cta {
+  margin-left: auto;
+  padding: 9px 20px;
+  background: #ffd54f;
+  color: #1a237e;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s, transform 0.15s;
+
+  &:hover {
+    background: #ffe082;
+    transform: translateY(-1px);
+  }
+}
+
+// ── Hero Section ─────────────────────────────────────────────────────────────
+.page-hero {
+  position: relative;
+  background: linear-gradient(135deg, #1a237e 0%, #283593 55%, #3949ab 100%);
+  padding: 56px 24px 0;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,213,79,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 80px; left: -40px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+    pointer-events: none;
+  }
+}
+
+.hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+  padding-bottom: 48px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,213,79,0.15);
+  border: 1px solid rgba(255,213,79,0.35);
+  color: #ffd54f;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 40px;
+  margin-bottom: 20px;
+
+  .material-icons { font-size: 15px; }
+}
+
+.hero-title {
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin-bottom: 16px;
+}
+
+.hero-sub {
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.68);
+  line-height: 1.7;
+}
+
+.hero-wave {
+  line-height: 0;
+
+  svg {
+    display: block;
+    width: 100%;
+    height: 80px;
+  }
+}
+
+// ── Main & Page Wrap ─────────────────────────────────────────────────────────
+.app-main {
+  flex: 1;
+  background: #f0f2f8;
+  padding: 48px 16px 64px;
+}
+
+.page-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+// ── Tools Hub ────────────────────────────────────────────────────────────────
+.tools-hub {
+  margin-bottom: 52px;
+}
+
+.tools-hub-header {
+  margin-bottom: 20px;
+}
+
+.tools-hub-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #1a237e;
+  letter-spacing: -0.02em;
+}
+
+.tools-hub-sub {
+  font-size: 0.875rem;
+  color: #5c6070;
+  margin-top: 4px;
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+// ── Tool Card ────────────────────────────────────────────────────────────────
+.tool-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 16px;
+  border: 2px solid transparent;
+  box-shadow: 0 2px 12px rgba(40,53,147,0.07);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+  position: relative;
+
+  &--active {
+    border-color: #3949ab;
+    box-shadow: 0 4px 20px rgba(57,73,171,0.18);
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(57,73,171,0.25);
+    }
+  }
+
+  &--soon {
+    opacity: 0.6;
+    cursor: default;
+  }
+
+  &__icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    .material-icons { font-size: 24px; }
+
+    &--blue   { background: #e8eaf6; .material-icons { color: #3949ab; } }
+    &--green  { background: #e8f5e9; .material-icons { color: #2e7d32; } }
+    &--purple { background: #f3e5f5; .material-icons { color: #7b1fa2; } }
+    &--orange { background: #fff3e0; .material-icons { color: #ef6c00; } }
+  }
+
+  &__body {
+    flex: 1;
+  }
+
+  &__badge {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-bottom: 6px;
+    background: #e8eaf6;
+    color: #3949ab;
+
+    &--soon {
+      background: #f5f5f5;
+      color: #9e9e9e;
+    }
+  }
+
+  &__title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1a237e;
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+
+  &__desc {
+    font-size: 0.8rem;
+    color: #5c6070;
+    line-height: 1.5;
+  }
+
+  &__arrow {
+    color: #7986cb;
+    font-size: 20px;
+    margin-top: 2px;
+    flex-shrink: 0;
+    align-self: center;
+  }
+}
+
+// ── Active Tool Section ───────────────────────────────────────────────────────
+.active-tool {
+  // Divider line above
+  border-top: 2px solid #e0e4f0;
+  padding-top: 40px;
+}
+
+.breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 14px;
+  background: #fff;
+  border: 1px solid #dde1ee;
+  border-radius: 40px;
+  margin-bottom: 24px;
+  font-size: 0.78rem;
+
+  .material-icons {
+    font-size: 15px;
+    color: #7986cb;
+  }
+
+  &__link {
+    color: #3949ab;
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover { text-decoration: underline; }
+  }
+
+  &__sep {
+    color: #c5cae9;
+  }
+
+  &__current {
+    color: #1a237e;
+    font-weight: 700;
+  }
+}
+
+.active-tool__header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.active-tool__icon {
+  width: 52px;
+  height: 52px;
+  background: linear-gradient(135deg, #283593, #3949ab);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(40,53,147,0.3);
+
+  .material-icons {
+    font-size: 26px;
+    color: #fff;
+  }
+}
+
+.active-tool__title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1a237e;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.active-tool__sub {
+  font-size: 0.875rem;
+  color: #5c6070;
+  margin-top: 3px;
+}
+
+// ── Footer ───────────────────────────────────────────────────────────────────
+.app-footer {
+  background: #1a237e;
+  padding: 28px 24px;
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #ffd54f;
+  font-size: 1rem;
+  font-weight: 500;
+  white-space: nowrap;
+
+  .material-icons { font-size: 20px; }
+  strong { font-weight: 800; color: #fff; }
+}
+
+.footer-copy {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.5;
+  flex: 1;
+}
+
+.footer-links {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.footer-link {
+  padding: 5px 10px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.6);
+  transition: color 0.2s, background 0.2s;
+
+  &:hover {
+    color: #fff;
+    background: rgba(255,255,255,0.08);
+  }
+}
+
+// ── Responsive ───────────────────────────────────────────────────────────────
+@media (max-width: 900px) {
+  .tools-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .nav-links { display: none; }
+  .nav-cta   { display: none; }
+  .footer-inner { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .active-tool__title { font-size: 1.2rem; }
+}
