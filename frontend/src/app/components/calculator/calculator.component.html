@@ -1,197 +1,290 @@
 <div class="calculator-container">
-  <header class="calculator-header">
-    <h1><mat-icon>home</mat-icon> Monthly Mortgage Calculator</h1>
-    <p class="subtitle">Calculate your estimated monthly mortgage payment</p>
-  </header>
+  <form [formGroup]="form" (ngSubmit)="calculate()">
 
-  <form [formGroup]="form" (ngSubmit)="calculate()" class="calculator-form">
-
-    <!-- Address Field -->
-    <div class="form-section">
-      <h2 class="section-title">Property Information</h2>
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Property Address</mat-label>
-        <mat-icon matPrefix>location_on</mat-icon>
-        <input
-          matInput
-          formControlName="address"
-          placeholder="Start typing an address..."
-          (input)="onAddressInput($event)"
-          [matAutocomplete]="addressAuto"
-        />
-        <mat-spinner *ngIf="loadingAddresses" matSuffix diameter="20"></mat-spinner>
-        <mat-autocomplete #addressAuto="matAutocomplete" (optionSelected)="onAddressSelected($event.option.value)">
-          <mat-option *ngFor="let suggestion of addressSuggestions" [value]="suggestion.description">
-            <mat-icon>place</mat-icon>
-            {{ suggestion.description }}
-          </mat-option>
-        </mat-autocomplete>
-        <mat-hint>Enter address to auto-populate property tax</mat-hint>
-      </mat-form-field>
-    </div>
-
-    <!-- Loan Type -->
-    <div class="form-section">
-      <h2 class="section-title">Loan Details</h2>
-
-      <div class="radio-group-label">Loan Type <span class="required">*</span></div>
-      <mat-radio-group formControlName="loanType" class="loan-type-group">
-        <mat-radio-button *ngFor="let type of loanTypes" [value]="type">
-          {{ type }}
-        </mat-radio-button>
-      </mat-radio-group>
-
-      <!-- Loan Term -->
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Loan Term</mat-label>
-        <mat-select formControlName="loanTerm">
-          <mat-option *ngFor="let term of loanTerms" [value]="term">
-            {{ term }} years
-          </mat-option>
-        </mat-select>
-        <mat-error>Loan term is required</mat-error>
-      </mat-form-field>
-    </div>
-
-    <!-- Financial Inputs -->
-    <div class="form-section">
-      <h2 class="section-title">Financial Information</h2>
-
-      <div class="form-row">
-        <mat-form-field appearance="outline" class="half-width">
-          <mat-label>Purchase Price</mat-label>
-          <span matPrefix>$&nbsp;</span>
-          <input matInput type="number" formControlName="purchasePrice" placeholder="0" min="0" />
-          <mat-error *ngIf="form.get('purchasePrice')?.hasError('required')">Required</mat-error>
-          <mat-error *ngIf="form.get('purchasePrice')?.hasError('min')">Must be positive</mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="half-width">
-          <mat-label>Down Payment</mat-label>
-          <span matPrefix>$&nbsp;</span>
-          <input matInput type="number" formControlName="downPayment" placeholder="0" min="0" />
-          <mat-error *ngIf="form.get('downPayment')?.hasError('required')">Required</mat-error>
-          <mat-error *ngIf="form.get('downPayment')?.hasError('min')">Must be non-negative</mat-error>
-          <mat-error *ngIf="downPaymentError">Cannot exceed purchase price</mat-error>
-        </mat-form-field>
+    <!-- ── 1. Property Information ──────────────────────────────────────── -->
+    <div class="calc-card">
+      <div class="section-header">
+        <div class="section-icon icon-blue">
+          <span class="material-icons">location_on</span>
+        </div>
+        <div>
+          <div class="section-title">Property Information</div>
+          <div class="section-subtitle">Enter address to auto-populate property tax</div>
+        </div>
       </div>
-
-      <div class="form-row">
-        <mat-form-field appearance="outline" class="half-width">
-          <mat-label>Grant / DPA Amount</mat-label>
-          <span matPrefix>$&nbsp;</span>
-          <input matInput type="number" formControlName="grantDpa" placeholder="0" min="0" />
-          <mat-hint>Down payment assistance</mat-hint>
-          <mat-error *ngIf="form.get('grantDpa')?.hasError('min')">Must be non-negative</mat-error>
-          <mat-error *ngIf="grantDpaError">Cannot exceed purchase price + down payment</mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="half-width">
-          <mat-label>Interest Rate (%)</mat-label>
-          <span matSuffix>%</span>
-          <input matInput type="number" formControlName="interestRate" placeholder="6.50" step="0.01" min="0.01" max="30" />
-          <mat-hint>e.g. 6.50 for 6.5%</mat-hint>
-          <mat-error *ngIf="form.get('interestRate')?.hasError('required')">Required</mat-error>
-          <mat-error *ngIf="form.get('interestRate')?.hasError('min') || form.get('interestRate')?.hasError('max')">
-            Must be between 0.01% and 30%
-          </mat-error>
+      <div class="section-body">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Property Address</mat-label>
+          <span matPrefix><span class="material-icons" style="font-size:18px;color:#7986cb;margin-right:4px;">search</span></span>
+          <input
+            matInput
+            formControlName="address"
+            placeholder="Start typing an address..."
+            (input)="onAddressInput($event)"
+            [matAutocomplete]="addressAuto"
+          />
+          <mat-spinner *ngIf="loadingAddresses" matSuffix diameter="18"></mat-spinner>
+          <mat-autocomplete #addressAuto="matAutocomplete" (optionSelected)="onAddressSelected($event.option.value)">
+            <mat-option *ngFor="let s of addressSuggestions" [value]="s.description">
+              <span class="material-icons" style="font-size:14px;vertical-align:middle;margin-right:6px;color:#9fa8da;">place</span>
+              {{ s.description }}
+            </mat-option>
+          </mat-autocomplete>
         </mat-form-field>
       </div>
     </div>
 
-    <!-- Additional Costs -->
-    <div class="form-section">
-      <h2 class="section-title">Additional Monthly Costs</h2>
-
-      <div class="form-row">
-        <mat-form-field appearance="outline" class="half-width">
-          <mat-label>PMI (Private Mortgage Insurance)</mat-label>
-          <span matPrefix>$&nbsp;</span>
-          <input matInput type="number" formControlName="pmi" placeholder="0" min="0" />
-          <mat-hint>Monthly amount</mat-hint>
-          <mat-error *ngIf="form.get('pmi')?.hasError('min')">Must be non-negative</mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="half-width">
-          <mat-label>Home Insurance</mat-label>
-          <span matPrefix>$&nbsp;</span>
-          <input matInput type="number" formControlName="homeInsurance" min="0" />
-          <mat-hint>Default: $180/month</mat-hint>
-          <mat-error *ngIf="form.get('homeInsurance')?.hasError('min')">Must be non-negative</mat-error>
-        </mat-form-field>
+    <!-- ── 2. Loan Details ───────────────────────────────────────────────── -->
+    <div class="calc-card">
+      <div class="section-header">
+        <div class="section-icon icon-purple">
+          <span class="material-icons">account_balance</span>
+        </div>
+        <div>
+          <div class="section-title">Loan Details</div>
+          <div class="section-subtitle">Select your loan type and term</div>
+        </div>
       </div>
+      <div class="section-body">
 
-      <div class="form-row">
-        <mat-form-field appearance="outline" class="half-width">
-          <mat-label>Property Tax (Monthly)</mat-label>
-          <span matPrefix>$&nbsp;</span>
-          <input matInput type="number" formControlName="propertyTax" placeholder="0" min="0" />
-          <mat-spinner *ngIf="loadingPropertyTax" matSuffix diameter="20"></mat-spinner>
-          <mat-hint *ngIf="propertyTaxNote" [class.success-hint]="propertyTaxNote.includes('Auto-fetched')">
-            {{ propertyTaxNote }}
-          </mat-hint>
-          <mat-error *ngIf="form.get('propertyTax')?.hasError('min')">Must be non-negative</mat-error>
+        <!-- Loan Type custom radio buttons -->
+        <div class="loan-type-wrapper">
+          <div class="loan-type-label">Loan Type <span style="color:#c62828">*</span></div>
+          <div class="loan-type-grid">
+            <label class="loan-type-btn" *ngFor="let type of loanTypes">
+              <input type="radio" formControlName="loanType" [value]="type" />
+              <span class="loan-type-label-inner">
+                <span class="material-icons">{{ loanTypeIcon(type) }}</span>
+                {{ type }}
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Loan Term -->
+        <mat-form-field appearance="outline" style="width:220px">
+          <mat-label>Loan Term</mat-label>
+          <span matPrefix><span class="material-icons" style="font-size:18px;color:#7986cb;margin-right:4px;">calendar_today</span></span>
+          <mat-select formControlName="loanTerm">
+            <mat-option *ngFor="let t of loanTerms" [value]="t">{{ t }} years</mat-option>
+          </mat-select>
+          <mat-error>Loan term is required</mat-error>
         </mat-form-field>
       </div>
     </div>
 
-    <!-- Calculate Button -->
-    <div class="form-actions">
-      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
-        <mat-icon>calculate</mat-icon>
-        Calculate
-      </button>
-      <button mat-stroked-button type="button" (click)="form.reset({ loanType: 'Conventional', loanTerm: 30, homeInsurance: 180, grantDpa: 0, pmi: 0 }); result = null">
-        <mat-icon>refresh</mat-icon>
-        Reset
-      </button>
+    <!-- ── 3. Financial Information ──────────────────────────────────────── -->
+    <div class="calc-card">
+      <div class="section-header">
+        <div class="section-icon icon-green">
+          <span class="material-icons">attach_money</span>
+        </div>
+        <div>
+          <div class="section-title">Financial Information</div>
+          <div class="section-subtitle">Purchase price, down payment, and rate</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="form-row" style="margin-bottom:16px">
+          <mat-form-field appearance="outline">
+            <mat-label>Purchase Price</mat-label>
+            <span matPrefix>$&nbsp;</span>
+            <input matInput type="number" formControlName="purchasePrice" placeholder="350,000" min="1" />
+            <mat-error *ngIf="form.get('purchasePrice')?.hasError('required')">Required</mat-error>
+            <mat-error *ngIf="form.get('purchasePrice')?.hasError('min')">Must be greater than $0</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Down Payment</mat-label>
+            <span matPrefix>$&nbsp;</span>
+            <input matInput type="number" formControlName="downPayment" placeholder="70,000" min="0" />
+            <mat-error *ngIf="form.get('downPayment')?.hasError('required')">Required</mat-error>
+            <mat-error *ngIf="form.get('downPayment')?.hasError('min')">Must be ≥ $0</mat-error>
+            <mat-error *ngIf="downPaymentError && !form.get('downPayment')?.hasError('min')">
+              Cannot exceed purchase price
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Grant / DPA Amount</mat-label>
+            <span matPrefix>$&nbsp;</span>
+            <input matInput type="number" formControlName="grantDpa" placeholder="0" min="0" />
+            <mat-hint>Down payment assistance (optional)</mat-hint>
+            <mat-error *ngIf="form.get('grantDpa')?.hasError('min')">Must be ≥ $0</mat-error>
+            <mat-error *ngIf="grantDpaError && !form.get('grantDpa')?.hasError('min')">
+              Cannot exceed purchase price + down payment
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Interest Rate</mat-label>
+            <input matInput type="number" formControlName="interestRate" placeholder="6.50" step="0.01" min="0.01" max="30" />
+            <span matSuffix>%</span>
+            <mat-hint>Annual percentage rate (e.g. 6.50)</mat-hint>
+            <mat-error *ngIf="form.get('interestRate')?.hasError('required')">Required</mat-error>
+            <mat-error *ngIf="form.get('interestRate')?.hasError('min') || form.get('interestRate')?.hasError('max')">
+              Must be between 0.01% and 30%
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 4. Additional Monthly Costs ───────────────────────────────────── -->
+    <div class="calc-card">
+      <div class="section-header">
+        <div class="section-icon icon-orange">
+          <span class="material-icons">receipt_long</span>
+        </div>
+        <div>
+          <div class="section-title">Additional Monthly Costs</div>
+          <div class="section-subtitle">PMI, insurance, and property tax</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="form-row" style="margin-bottom:16px">
+          <mat-form-field appearance="outline">
+            <mat-label>PMI (Private Mortgage Insurance)</mat-label>
+            <span matPrefix>$&nbsp;</span>
+            <input matInput type="number" formControlName="pmi" placeholder="0" min="0" />
+            <mat-hint>Monthly amount</mat-hint>
+            <mat-error *ngIf="form.get('pmi')?.hasError('min')">Must be ≥ $0</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Home Insurance</mat-label>
+            <span matPrefix>$&nbsp;</span>
+            <input matInput type="number" formControlName="homeInsurance" min="0" />
+            <mat-hint>Default: $180 / month</mat-hint>
+            <mat-error *ngIf="form.get('homeInsurance')?.hasError('min')">Must be ≥ $0</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" style="max-width:320px">
+            <mat-label>Property Tax (Monthly)</mat-label>
+            <span matPrefix>$&nbsp;</span>
+            <input matInput type="number" formControlName="propertyTax" placeholder="0" min="0" />
+            <mat-spinner *ngIf="loadingPropertyTax" matSuffix diameter="18"></mat-spinner>
+            <mat-error *ngIf="form.get('propertyTax')?.hasError('min')">Must be ≥ $0</mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Property Tax status message -->
+        <div *ngIf="propertyTaxNote" class="tax-status"
+          [class.tax-loading]="loadingPropertyTax"
+          [class.tax-success]="!loadingPropertyTax && propertyTaxNote.includes('Auto-fetched')"
+          [class.tax-manual]="!loadingPropertyTax && !propertyTaxNote.includes('Auto-fetched')">
+          <span class="material-icons">{{ loadingPropertyTax ? 'hourglass_empty' : (propertyTaxNote.includes('Auto-fetched') ? 'check_circle' : 'info') }}</span>
+          {{ propertyTaxNote }}
+        </div>
+      </div>
+
+      <!-- Calculate / Reset buttons -->
+      <div class="form-actions">
+        <button type="submit" class="btn-calculate" [disabled]="form.invalid">
+          <span class="material-icons">calculate</span>
+          Calculate Payment
+        </button>
+        <button type="button" class="btn-reset" (click)="resetForm()">
+          <span class="material-icons">refresh</span>
+          Reset
+        </button>
+      </div>
     </div>
 
   </form>
 
-  <!-- Results Section -->
-  <div class="results-section" *ngIf="result">
-    <mat-divider></mat-divider>
+  <!-- ── Results ────────────────────────────────────────────────────────── -->
+  <div class="results-card" *ngIf="result">
 
-    <div class="total-payment">
-      <div class="payment-label">Estimated Monthly Payment</div>
-      <div class="payment-amount">{{ formatCurrency(result.totalMonthlyPayment) }}<span class="per-month"> / month</span></div>
+    <!-- Total monthly payment banner -->
+    <div class="total-banner">
+      <div class="total-label">Estimated Monthly Payment</div>
+      <div class="total-amount">
+        {{ formatCurrency(result.totalMonthlyPayment) }}<span class="total-per-month">/ mo</span>
+      </div>
+      <div class="total-note">Principal &amp; Interest + PMI + Property Tax + Home Insurance</div>
     </div>
 
-    <div class="breakdown">
-      <h3>Payment Breakdown</h3>
-      <div class="breakdown-row">
-        <span class="breakdown-label">Principal &amp; Interest</span>
-        <span class="breakdown-value">{{ formatCurrency(result.breakdown.principalAndInterest) }}</span>
-      </div>
-      <div class="breakdown-row" *ngIf="result.breakdown.pmi > 0">
-        <span class="breakdown-label">PMI</span>
-        <span class="breakdown-value">{{ formatCurrency(result.breakdown.pmi) }}</span>
-      </div>
-      <div class="breakdown-row" *ngIf="result.breakdown.propertyTax > 0">
-        <span class="breakdown-label">Property Tax</span>
-        <span class="breakdown-value">{{ formatCurrency(result.breakdown.propertyTax) }}</span>
-      </div>
-      <div class="breakdown-row">
-        <span class="breakdown-label">Home Insurance</span>
-        <span class="breakdown-value">{{ formatCurrency(result.breakdown.homeInsurance) }}</span>
-      </div>
-      <mat-divider></mat-divider>
-      <div class="breakdown-row total">
-        <span class="breakdown-label">Total</span>
-        <span class="breakdown-value">{{ formatCurrency(result.totalMonthlyPayment) }}</span>
-      </div>
-    </div>
+    <!-- Breakdown chips -->
+    <div class="breakdown-body">
+      <div class="breakdown-title">Payment Breakdown</div>
 
-    <div class="loan-summary">
-      <div class="summary-item">
-        <mat-icon>account_balance</mat-icon>
-        <div>
-          <div class="summary-label">Loan Amount</div>
-          <div class="summary-value">{{ formatCurrency(result.principal) }}</div>
+      <div class="breakdown-grid">
+        <div class="breakdown-chip">
+          <div class="chip-icon chip-blue">
+            <span class="material-icons">home</span>
+          </div>
+          <div class="chip-content">
+            <div class="chip-label">Principal &amp; Interest</div>
+            <div class="chip-value">{{ formatCurrency(result.breakdown.principalAndInterest) }}</div>
+          </div>
+        </div>
+
+        <div class="breakdown-chip" *ngIf="result.breakdown.pmi > 0">
+          <div class="chip-icon chip-purple">
+            <span class="material-icons">shield</span>
+          </div>
+          <div class="chip-content">
+            <div class="chip-label">PMI</div>
+            <div class="chip-value">{{ formatCurrency(result.breakdown.pmi) }}</div>
+          </div>
+        </div>
+
+        <div class="breakdown-chip">
+          <div class="chip-icon chip-orange">
+            <span class="material-icons">fire_truck</span>
+          </div>
+          <div class="chip-content">
+            <div class="chip-label">Home Insurance</div>
+            <div class="chip-value">{{ formatCurrency(result.breakdown.homeInsurance) }}</div>
+          </div>
+        </div>
+
+        <div class="breakdown-chip" *ngIf="result.breakdown.propertyTax > 0">
+          <div class="chip-icon chip-green">
+            <span class="material-icons">account_balance</span>
+          </div>
+          <div class="chip-content">
+            <div class="chip-label">Property Tax</div>
+            <div class="chip-value">{{ formatCurrency(result.breakdown.propertyTax) }}</div>
+          </div>
         </div>
       </div>
+
+      <!-- Total row -->
+      <div class="breakdown-total-row">
+        <span class="total-row-label">Total Monthly Payment</span>
+        <span class="total-row-value">{{ formatCurrency(result.totalMonthlyPayment) }}</span>
+      </div>
     </div>
+
+    <!-- Loan summary pills -->
+    <div class="loan-summary-row">
+      <div class="summary-pill">
+        <span class="material-icons">payments</span>
+        <span class="pill-label">Loan Amount</span>
+        <span class="pill-value">{{ formatCurrency(result.principal) }}</span>
+      </div>
+      <div class="summary-pill">
+        <span class="material-icons">percent</span>
+        <span class="pill-label">Interest Rate</span>
+        <span class="pill-value">{{ form.value.interestRate }}%</span>
+      </div>
+      <div class="summary-pill">
+        <span class="material-icons">schedule</span>
+        <span class="pill-label">Loan Term</span>
+        <span class="pill-value">{{ form.value.loanTerm }} years</span>
+      </div>
+      <div class="summary-pill">
+        <span class="material-icons">category</span>
+        <span class="pill-label">Loan Type</span>
+        <span class="pill-value">{{ form.value.loanType }}</span>
+      </div>
+    </div>
+
   </div>
 </div>

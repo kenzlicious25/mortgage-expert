@@ -155,6 +155,29 @@ export class CalculatorComponent implements OnInit, OnDestroy {
     });
   }
 
+  resetForm(): void {
+    this.form.reset({
+      loanType: 'Conventional',
+      loanTerm: 30,
+      homeInsurance: 180,
+      grantDpa: 0,
+      pmi: 0
+    });
+    this.result = null;
+    this.propertyTaxNote = '';
+    this.addressSuggestions = [];
+  }
+
+  loanTypeIcon(type: string): string {
+    const icons: Record<string, string> = {
+      'Conventional': 'home',
+      'FHA': 'account_balance',
+      'VA': 'military_tech',
+      'Jumbo': 'villa'
+    };
+    return icons[type] || 'home';
+  }
+
   formatCurrency(value: number | null): string {
     if (value === null || value === undefined) return '$0';
     return new Intl.NumberFormat('en-US', {
