@@ -1,23 +1,22 @@
-// ─── Angular Material Theme ───────────────────────────────────────────────────
+// ─── Angular Material Theme (v19 M3 API) ─────────────────────────────────────
 @use '@angular/material' as mat;
 
-$primary-palette: mat.define-palette(mat.$indigo-palette, 700, 400, 900);
-$accent-palette:  mat.define-palette(mat.$amber-palette, 600, 200, 900);
-$warn-palette:    mat.define-palette(mat.$red-palette);
-
-$theme: mat.define-light-theme((
+$theme: mat.define-theme((
   color: (
-    primary: $primary-palette,
-    accent:  $accent-palette,
-    warn:    $warn-palette,
+    theme-type: light,
+    primary: mat.$azure-palette,
+    tertiary: mat.$orange-palette,
   ),
-  typography: mat.define-typography-config(
-    $font-family: "'Inter', sans-serif",
+  typography: (
+    brand-family: "'Inter', sans-serif",
+    plain-family: "'Inter', sans-serif",
   ),
-  density: 0,
+  density: (scale: 0),
 ));
 
-@include mat.all-component-themes($theme);
+html {
+  @include mat.all-component-themes($theme);
+}
 
 // ─── Custom Tokens ────────────────────────────────────────────────────────────
 :root {
