@@ -19,12 +19,16 @@
           <input
             matInput
             formControlName="address"
-            placeholder="Start typing an address..."
+            placeholder="Start typing an address…"
+            autocomplete="off"
             (input)="onAddressInput($event)"
             [matAutocomplete]="addressAuto"
           />
           <mat-spinner *ngIf="loadingAddresses" matSuffix diameter="18"></mat-spinner>
-          <mat-autocomplete #addressAuto="matAutocomplete" (optionSelected)="onAddressSelected($event.option.value)">
+          <mat-autocomplete
+            #addressAuto="matAutocomplete"
+            (optionSelected)="onAddressSelected($event.option.value)"
+          >
             <mat-option *ngFor="let s of addressSuggestions" [value]="s.description">
               <span class="material-icons" style="font-size:14px;vertical-align:middle;margin-right:6px;color:#9fa8da;">place</span>
               {{ s.description }}
@@ -86,18 +90,37 @@
       </div>
       <div class="section-body">
         <div class="form-row" style="margin-bottom:16px">
+
+          <!-- Purchase Price -->
           <mat-form-field appearance="outline">
             <mat-label>Purchase Price</mat-label>
             <span matPrefix>$&nbsp;</span>
-            <input matInput type="number" formControlName="purchasePrice" placeholder="350,000" min="1" />
+            <input
+              matInput
+              type="text"
+              inputmode="numeric"
+              formControlName="purchasePrice"
+              placeholder="350,000"
+              autocomplete="off"
+              (input)="formatCurrencyInput($event, 'purchasePrice')"
+            />
             <mat-error *ngIf="form.get('purchasePrice')?.hasError('required')">Required</mat-error>
             <mat-error *ngIf="form.get('purchasePrice')?.hasError('min')">Must be greater than $0</mat-error>
           </mat-form-field>
 
+          <!-- Down Payment -->
           <mat-form-field appearance="outline">
             <mat-label>Down Payment</mat-label>
             <span matPrefix>$&nbsp;</span>
-            <input matInput type="number" formControlName="downPayment" placeholder="70,000" min="0" />
+            <input
+              matInput
+              type="text"
+              inputmode="numeric"
+              formControlName="downPayment"
+              placeholder="70,000"
+              autocomplete="off"
+              (input)="formatCurrencyInput($event, 'downPayment')"
+            />
             <mat-error *ngIf="form.get('downPayment')?.hasError('required')">Required</mat-error>
             <mat-error *ngIf="form.get('downPayment')?.hasError('min')">Must be ≥ $0</mat-error>
             <mat-error *ngIf="downPaymentError && !form.get('downPayment')?.hasError('min')">
@@ -107,10 +130,20 @@
         </div>
 
         <div class="form-row">
+
+          <!-- Grant / DPA -->
           <mat-form-field appearance="outline">
             <mat-label>Grant / DPA Amount</mat-label>
             <span matPrefix>$&nbsp;</span>
-            <input matInput type="number" formControlName="grantDpa" placeholder="0" min="0" />
+            <input
+              matInput
+              type="text"
+              inputmode="numeric"
+              formControlName="grantDpa"
+              placeholder="0"
+              autocomplete="off"
+              (input)="formatCurrencyInput($event, 'grantDpa')"
+            />
             <mat-hint>Down payment assistance (optional)</mat-hint>
             <mat-error *ngIf="form.get('grantDpa')?.hasError('min')">Must be ≥ $0</mat-error>
             <mat-error *ngIf="grantDpaError && !form.get('grantDpa')?.hasError('min')">
@@ -118,9 +151,18 @@
             </mat-error>
           </mat-form-field>
 
+          <!-- Interest Rate -->
           <mat-form-field appearance="outline">
             <mat-label>Interest Rate</mat-label>
-            <input matInput type="number" formControlName="interestRate" placeholder="6.50" step="0.01" min="0.01" max="30" />
+            <input
+              matInput
+              type="number"
+              formControlName="interestRate"
+              placeholder="6.50"
+              step="0.01"
+              min="0.01"
+              max="30"
+            />
             <span matSuffix>%</span>
             <mat-hint>Annual percentage rate (e.g. 6.50)</mat-hint>
             <mat-error *ngIf="form.get('interestRate')?.hasError('required')">Required</mat-error>
@@ -145,39 +187,72 @@
       </div>
       <div class="section-body">
         <div class="form-row" style="margin-bottom:16px">
+
+          <!-- PMI -->
           <mat-form-field appearance="outline">
             <mat-label>PMI (Private Mortgage Insurance)</mat-label>
             <span matPrefix>$&nbsp;</span>
-            <input matInput type="number" formControlName="pmi" placeholder="0" min="0" />
+            <input
+              matInput
+              type="text"
+              inputmode="numeric"
+              formControlName="pmi"
+              placeholder="0"
+              autocomplete="off"
+              (input)="formatCurrencyInput($event, 'pmi')"
+            />
             <mat-hint>Monthly amount</mat-hint>
             <mat-error *ngIf="form.get('pmi')?.hasError('min')">Must be ≥ $0</mat-error>
           </mat-form-field>
 
+          <!-- Home Insurance -->
           <mat-form-field appearance="outline">
             <mat-label>Home Insurance</mat-label>
             <span matPrefix>$&nbsp;</span>
-            <input matInput type="number" formControlName="homeInsurance" min="0" />
+            <input
+              matInput
+              type="text"
+              inputmode="numeric"
+              formControlName="homeInsurance"
+              autocomplete="off"
+              (input)="formatCurrencyInput($event, 'homeInsurance')"
+            />
             <mat-hint>Default: $180 / month</mat-hint>
             <mat-error *ngIf="form.get('homeInsurance')?.hasError('min')">Must be ≥ $0</mat-error>
           </mat-form-field>
         </div>
 
         <div class="form-row">
+          <!-- Property Tax -->
           <mat-form-field appearance="outline" style="max-width:320px">
             <mat-label>Property Tax (Monthly)</mat-label>
             <span matPrefix>$&nbsp;</span>
-            <input matInput type="number" formControlName="propertyTax" placeholder="0" min="0" />
+            <input
+              matInput
+              type="text"
+              inputmode="numeric"
+              formControlName="propertyTax"
+              placeholder="Auto-populated from address"
+              autocomplete="off"
+              (input)="formatCurrencyInput($event, 'propertyTax')"
+            />
             <mat-spinner *ngIf="loadingPropertyTax" matSuffix diameter="18"></mat-spinner>
             <mat-error *ngIf="form.get('propertyTax')?.hasError('min')">Must be ≥ $0</mat-error>
           </mat-form-field>
         </div>
 
         <!-- Property Tax status message -->
-        <div *ngIf="propertyTaxNote" class="tax-status"
+        <div
+          *ngIf="propertyTaxNote"
+          class="tax-status"
           [class.tax-loading]="loadingPropertyTax"
-          [class.tax-success]="!loadingPropertyTax && propertyTaxNote.includes('Auto-fetched')"
-          [class.tax-manual]="!loadingPropertyTax && !propertyTaxNote.includes('Auto-fetched')">
-          <span class="material-icons">{{ loadingPropertyTax ? 'hourglass_empty' : (propertyTaxNote.includes('Auto-fetched') ? 'check_circle' : 'info') }}</span>
+          [class.tax-success]="taxNoteIsSuccess"
+          [class.tax-warning]="taxNoteIsWarning"
+          [class.tax-manual]="!loadingPropertyTax && !taxNoteIsSuccess && !taxNoteIsWarning"
+        >
+          <span class="material-icons">
+            {{ loadingPropertyTax ? 'hourglass_empty' : (taxNoteIsSuccess ? 'check_circle' : (taxNoteIsWarning ? 'warning' : 'info')) }}
+          </span>
           {{ propertyTaxNote }}
         </div>
       </div>

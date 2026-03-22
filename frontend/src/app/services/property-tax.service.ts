@@ -9,6 +9,8 @@ export interface PropertyTaxResult {
   monthlyTax: number | null;
   source: string;
   address: string;
+  stateTaxRate?: number;
+  stateCode?: string;
   note?: string;
 }
 
@@ -35,7 +37,7 @@ export class PropertyTaxService {
             monthlyTax: null,
             source: 'manual',
             address,
-            note: 'Property tax lookup failed. Please enter manually.'
+            note: 'Property tax lookup unavailable. Please enter manually.'
           })
         )
       );
